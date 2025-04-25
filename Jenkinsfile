@@ -1,10 +1,7 @@
 // Jenkinsfile for deploying multiple microservices with Docker Compose (Local)
 
 pipeline {
-    agent {
-        // Use 'any' or a specific agent label that has Docker and Docker Compose available.
-        any
-    }
+    agent any
     stages {
         stage('Checkout') {
             steps {
