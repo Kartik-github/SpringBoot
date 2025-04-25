@@ -22,13 +22,13 @@ pipeline {
             steps {
                 // Build the Docker images for all microservices defined in your docker-compose.yml.
                 // This assumes your Dockerfiles are in the correct directories.
-                bat: 'docker-compose build'
+                bat 'docker-compose build'
             }
         }
         stage('Test') {
             steps {
                 // Run tests.  Adapt to your testing strategy.
-                bat: 'docker-compose run --rm app ./gradlew test'
+                bat 'docker-compose run --rm app ./gradlew test'
             }
         }
         stage('Deploy') {
@@ -36,7 +36,7 @@ pipeline {
                 // Deploy the application using Docker Compose.
                 // This assumes that your docker-compose.yml is configured to build images
                 // locally. We use docker-compose up -d to start the services.
-                bat: 'docker-compose up -d --force-recreate'
+                bat 'docker-compose up -d --force-recreate'
             }
         }
         // stage('Post-Deployment Verification') {
