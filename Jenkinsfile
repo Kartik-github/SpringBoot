@@ -13,7 +13,7 @@ pipeline {
                 git(
                     credentialsId:'github-id',
                     url: 'https://github.com/Kartik-github/SpringBoot.git',  // Replace with the actual path to your local Git repo
-                   branch: 'main',
+                   branch: 'master',
                     //  credentialsId: 'your-git-credentials-id'  //Remove this line
                 )
             }
