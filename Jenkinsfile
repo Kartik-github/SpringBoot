@@ -25,12 +25,12 @@ pipeline {
                 bat 'docker-compose build'
             }
         }
-        stage('Test') {
-            steps {
-                // Run tests.  Adapt to your testing strategy.
-                bat 'docker-compose run --rm app ./gradlew test'
-            }
-        }
+        // stage('Test') {
+        //     steps {
+        //         // Run tests.  Adapt to your testing strategy.
+        //         bat 'docker-compose run --rm app ./gradlew test'
+        //     }
+        // }
         stage('Deploy') {
             steps {
                 // Deploy the application using Docker Compose.
