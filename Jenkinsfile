@@ -11,9 +11,9 @@ pipeline {
                 //  if your Jenkinsfile is already in the repo and Jenkins is set to execute
                 //  in that directory.  If that is the case, you can remove this stage.
                 git(
-                    credentialsId:'github-id'
-                    repoUrl: 'https://github.com/Kartik-github/SpringBoot.git',  // Replace with the actual path to your local Git repo
-                    branch: 'main',
+                    credentialsId:'github-id',
+                    url: 'https://github.com/Kartik-github/SpringBoot.git',  // Replace with the actual path to your local Git repo
+                   branch: 'main',
                     //  credentialsId: 'your-git-credentials-id'  //Remove this line
                 )
             }
