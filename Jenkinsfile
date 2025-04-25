@@ -22,13 +22,13 @@ pipeline {
             steps {
                 // Build the Docker images for all microservices defined in your docker-compose.yml.
                 // This assumes your Dockerfiles are in the correct directories.
-                shell script: 'docker-compose build'
+                bat: 'docker-compose build'
             }
         }
         stage('Test') {
             steps {
                 // Run tests.  Adapt to your testing strategy.
-                shell script: 'docker-compose run --rm app ./gradlew test'
+                bat: 'docker-compose run --rm app ./gradlew test'
             }
         }
         stage('Deploy') {
@@ -36,15 +36,15 @@ pipeline {
                 // Deploy the application using Docker Compose.
                 // This assumes that your docker-compose.yml is configured to build images
                 // locally. We use docker-compose up -d to start the services.
-                shell script: 'docker-compose up -d --force-recreate'
+                bat: 'docker-compose up -d --force-recreate'
             }
         }
         // stage('Post-Deployment Verification') {
         //     steps {
         //         //  Add verification steps here.
         //         sleep 5
-        //         shell script 'curl http://your-service1-host:your-service1-port/actuator/health'
-        //         shell script 'curl http://your-service2-host:your-service2-port/actuator/health'
+        //         bat 'curl http://your-service1-host:your-service1-port/actuator/health'
+        //         bat 'curl http://your-service2-host:your-service2-port/actuator/health'
         //     }
         // }
     }
