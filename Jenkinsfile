@@ -20,6 +20,13 @@ pipeline {
         }
         stage('Build Images') {
             steps {
+                 script {
+                    withCredentials([string(credentialsId: 'docker-pass', variable: 'DOCKER_PASSWORD')]) {
+                        echo "Logging into Docker..."
+                        sh "docker login -u 'docker4ukartik' -p '$DOCKER_PASSWORD'"
+
+                        // ... rest of your Docker build and push steps
+                    }
                 bat 'docker login'
                 // Build the Docker images for all microservices defined in your docker-compose.yml.
                 // This assumes your Dockerfiles are in the correct directories.
