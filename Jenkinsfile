@@ -36,7 +36,8 @@ pipeline {
                 // Deploy the application using Docker Compose.
                 // This assumes that your docker-compose.yml is configured to build images
                 // locally. We use docker-compose up -d to start the services.
-                bat 'docker-compose up -d --force-recreate'
+                // bat 'docker-compose up -d --force-recreate'
+                bat 'docker-compose up -d'
             }
         }
         // stage('Post-Deployment Verification') {
