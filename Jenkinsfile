@@ -3,7 +3,7 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
+        stage('Checkout from Github') {
             steps {
                 // Checkout the source code from a local Git repository.
                 //  This assumes that the repository is on the same machine as the Jenkins agent,
@@ -12,7 +12,7 @@ pipeline {
                 //  in that directory.  If that is the case, you can remove this stage.
                 git(
                     credentialsId:'github-id'
-                    url: 'https://github.com/Kartik-github/SpringBoot.git',  // Replace with the actual path to your local Git repo
+                    repoUrl: 'https://github.com/Kartik-github/SpringBoot.git',  // Replace with the actual path to your local Git repo
                     branch: 'main',
                     //  credentialsId: 'your-git-credentials-id'  //Remove this line
                 )
@@ -39,14 +39,14 @@ pipeline {
                 sh 'docker-compose up -d --force-recreate'
             }
         }
-        stage('Post-Deployment Verification') {
-            steps {
-                //  Add verification steps here.
-                sleep 5
-                sh 'curl http://your-service1-host:your-service1-port/actuator/health'
-                sh 'curl http://your-service2-host:your-service2-port/actuator/health'
-            }
-        }
+        // stage('Post-Deployment Verification') {
+        //     steps {
+        //         //  Add verification steps here.
+        //         sleep 5
+        //         sh 'curl http://your-service1-host:your-service1-port/actuator/health'
+        //         sh 'curl http://your-service2-host:your-service2-port/actuator/health'
+        //     }
+        // }
     }
     post {
         always {
