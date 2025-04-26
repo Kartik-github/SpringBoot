@@ -33,6 +33,11 @@ private MovieInfoRepository repository;
         return repository.findAll();
     }
 
+    @GetMapping("/movie-info/hello")
+    public String hello() {
+        return "Nickelodeon";
+    }
+
     @GetMapping("/movie-info/find-path-by-id/{movieInfoId}")
     public String findPathByIdString(@PathVariable("movieInfoId") Long movieInfoId) {
         var videoInfoOptional = repository.findById(movieInfoId);
