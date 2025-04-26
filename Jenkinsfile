@@ -23,7 +23,7 @@ pipeline {
                  script {
                     withCredentials([usernamePassword(credentialsId:'docker-pass',usernameVariable:"USER_DOCKER",passwordVariable:"DOCKER_PASSWORD")]) {
                         echo "Logging into Docker..."
-                        sh "docker login -u \"$USER_DOCKER\" -p \"$DOCKER_PASSWORD\""
+                        bat "docker login -u \"$USER_DOCKER\" -p \"$DOCKER_PASSWORD\""
 
                         // ... rest of your Docker build and push steps
                     }
