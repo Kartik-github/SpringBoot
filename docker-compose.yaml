@@ -1,22 +1,28 @@
 version: '3'
 services:
   service-registry:
-    image: kartiks/service-registry-image
+    image: kartiks/service-image
     container_name: service-registry-container
     networks:
       - kartiks-network
   
   config-server:
-    image: kartiks/config-server-image
+    image: kartiks/config-server
     container_name: config-service-container
     networks:
       - kartiks-network
     depends_on:
       - service-registry
-      
-  
+  api-gateway:
+    image: kartiks/api-gateway
+    container_name: api-gateway-container
+    networks:
+      - kartiks-network
+    depends_on:
+      - service-registry
+
   movie-catalog-service:
-    image: kartiks/catalog-service
+    image: kartiks/catalog-image
     container_name: catalog-service-container
     networks:
       - kartiks-network
@@ -26,7 +32,7 @@ services:
       - api-gateway
 
   movie-streaming-service:
-    image: kartiks/streaming-service
+    image: kartiks/streaming-image
     container_name: streaming-service-container
     networks:
       - kartiks-network
@@ -35,13 +41,7 @@ services:
       - config-server
       - api-gateway
 
-  api-gateway:
-    image: kartiks/api-gateway
-    container_name: api-gateway-container
-    networks:
-      - kartiks-network
-    depends_on:
-      - service-registry
+ 
 
   
 networks:
