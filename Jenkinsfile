@@ -21,9 +21,9 @@ pipeline {
         stage('Build Images') {
             steps {
                  script {
-                    withCredentials([string(credentialsId: 'docker-pass', variable: 'DOCKER_PASSWORD')]) {
+                    withCredentials(usernamePassword(credentialsId:'docker-pass' usernameVariable:"USER_DOCKER" passwordVariable:"DOCKER_PASSWORD")) {
                         echo "Logging into Docker..."
-                        sh "docker login -u 'docker4ukartik' -p \"$DOCKER_PASSWORD\""
+                        sh "docker login -u \"$USER_DOCKER\" -p \"$DOCKER_PASSWORD\""
 
                         // ... rest of your Docker build and push steps
                     }
