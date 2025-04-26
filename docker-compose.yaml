@@ -3,12 +3,16 @@ services:
   service-registry:
     image: kartiks/service-image
     container_name: service-registry-container
+    ports:
+      -"8761:8761"
     networks:
       - kartiks-network
   
   config-server:
     image: kartiks/config-server
     container_name: config-service-container
+    ports:
+      -"8888:8888"
     networks:
       - kartiks-network
     depends_on:
@@ -16,6 +20,8 @@ services:
   api-gateway:
     image: kartiks/api-gateway
     container_name: api-gateway-container
+    ports:
+      -"8080:8080"
     networks:
       - kartiks-network
     depends_on:
@@ -24,6 +30,8 @@ services:
   movie-catalog-service:
     image: kartiks/catalog-image
     container_name: catalog-service-container
+    ports:
+      -"8090:8090"
     networks:
       - kartiks-network
     depends_on:
@@ -34,6 +42,8 @@ services:
   movie-streaming-service:
     image: kartiks/streaming-image
     container_name: streaming-service-container
+    ports:
+      -"8091:8091"
     networks:
       - kartiks-network
     depends_on:
