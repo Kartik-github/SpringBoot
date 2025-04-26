@@ -27,6 +27,8 @@ pipeline {
 
                         // ... rest of your Docker build and push steps
                     }
+                 }
+                 
                 bat 'docker login'
                 // Build the Docker images for all microservices defined in your docker-compose.yml.
                 // This assumes your Dockerfiles are in the correct directories.
