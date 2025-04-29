@@ -1,62 +1,75 @@
-// Jenkinsfile for deploying multiple microservices with Docker Compose (Local)
-
+// Jenkinsfile for deploying multiple microservices with Docker Compose
 pipeline {
     agent any
     stages {
-        stage('Checkout from Github') {
+        stage('Checkout from GitHub') {
             steps {
-                // Checkout the source code from a local Git repository.
-                //  This assumes that the repository is on the same machine as the Jenkins agent,
-                //  and that you've already cloned it.  You might not need this step
-                //  if your Jenkinsfile is already in the repo and Jenkins is set to execute
-                //  in that directory.  If that is the case, you can remove this stage.
                 git(
-                    credentialsId:'github-id',
-                    url: 'https://github.com/Kartik-github/SpringBoot.git',  // Replace with the actual path to your local Git repo
-                   branch: 'master',
-                    //  credentialsId: 'your-git-credentials-id'  //Remove this line
+                    credentialsId: 'github-id',
+                    url: 'https://github.com/Kartik-github/SpringBoot.git',
+                    branch: 'master'
                 )
+            }
+        }
+        stage('Build JARs') {
+            steps {
+                script {
+                    // Define the projects to build.  Adjust these paths to match your repository structure.
+                    def projects = [
+                        'service-registry',
+                        'api-gateway',
+                        'config-server',
+                        'movie-catalog-service',
+                        'movie-streaming-service'
+                        // Add other projects as needed
+                    ]
+
+                    // Build each project's JAR file.
+                    for (def project in projects) {
+                        echo "Building JAR for project: ${project}"
+                        bat "cd ${project} && ./gradlew clean build" // Or "cd ${project} && mvn clean package"
+                    }
+                }
             }
         }
         stage('Build Images') {
             steps {
-                 script {
-                    withCredentials([usernamePassword(credentialsId:'docker-pass',usernameVariable:"USER_DOCKER",passwordVariable:"DOCKER_PASSWORD")]) {
-                        echo "Logging into Docker..."
-                        bat "docker login -u \"$USER_DOCKER\" -p \"$DOCKER_PASSWORD\""
+                script {
+                    // Define the projects and their corresponding Dockerfile locations.
+                    def dockerProjects = [
+                        'service-registry':'service-registry/Dockerfile',
+                        'api-gateway':'api-gateway/Dockerfile',
+                        'config-server':'config-server/Dockerfile',
+                        'movie-catalog-service':'movie-catalog-service/Dockerfile',
+                        'movie-streaming-service':'movie-streaming-service/Dockerfile'
+                        // Add other projects and their Dockerfile paths
+                    ]
 
-                        // ... rest of your Docker build and push steps
+                    // Build a Docker image for each project.
+                    for (def project in dockerProjects.keySet()) {
+                        def dockerfile = dockerProjects[project]
+                        echo "Building Docker image for project: ${project} from ${dockerfile}"
+
+                        // Find the JAR file.
+                        def jarPattern = "build/libs/*.jar"  //For Gradle
+                        // def jarPattern = "target/*.jar"  //For Maven
+                        def jarFile = findFiles(baseDir: project, glob: jarPattern)[0]?.name
+
+                        if (!jarFile) {
+                            error "JAR file not found for project: ${project}.  Check that the build was successful."
+                        }
+                        sh "docker build -t ${project.toLowerCase()}:${BUILD_NUMBER} --build-arg JAR_FILE=${jarFile} ${project}"
                     }
-                 }
-                
-                // Build the Docker images for all microservices defined in your docker-compose.yml.
-                // This assumes your Dockerfiles are in the correct directories.
-                bat 'docker-compose build'
+                }
             }
         }
-        // stage('Test') {
-        //     steps {
-        //         // Run tests.  Adapt to your testing strategy.
-        //         bat 'docker-compose run --rm app ./gradlew test'
-        //     }
-        // }
         stage('Deploy') {
             steps {
                 // Deploy the application using Docker Compose.
-                // This assumes that your docker-compose.yml is configured to build images
-                // locally. We use docker-compose up -d to start the services.
-                // bat 'docker-compose up -d --force-recreate'
+                //  You'll need a docker-compose.yml that defines services for all your microservices.
                 bat 'docker-compose up -d --force-recreate'
             }
         }
-        // stage('Post-Deployment Verification') {
-        //     steps {
-        //         //  Add verification steps here.
-        //         sleep 5
-        //         bat 'curl http://your-service1-host:your-service1-port/actuator/health'
-        //         bat 'curl http://your-service2-host:your-service2-port/actuator/health'
-        //     }
-        // }
     }
     post {
         always {
