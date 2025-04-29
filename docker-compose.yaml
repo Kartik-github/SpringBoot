@@ -44,6 +44,7 @@ services:
       - kartiks-network
     depends_on:
       - service-registry
+      - config-server
 
   movie-catalog-service:
     image: kartiks/catalog-image
