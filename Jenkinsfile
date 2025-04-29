@@ -60,9 +60,10 @@ pipeline {
                                 error "JAR file not found for project: ${project}.  Check that the build was successful."
                            }
                            bat "docker build -t ${project.toLowerCase()}:${BUILD_NUMBER} --build-arg JAR_FILE=${jarFile} -f ${dockerfile} ."
-                        }
+                        }   
                 }
             }
+        }
         }
         stage('Deploy') {
             steps {
