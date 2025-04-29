@@ -58,7 +58,7 @@ pipeline {
                         if (!jarFile) {
                             error "JAR file not found for project: ${project}.  Check that the build was successful."
                         }
-                        sh "docker build -t ${project.toLowerCase()}:${BUILD_NUMBER} --build-arg JAR_FILE=${jarFile} ${project}"
+                        bat "docker build -t ${project.toLowerCase()}:${BUILD_NUMBER} --build-arg JAR_FILE=${jarFile} ${project}"
                     }
                 }
             }
