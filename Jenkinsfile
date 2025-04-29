@@ -50,16 +50,17 @@ pipeline {
                         def dockerfile = dockerProjects[project]
                         echo "Building Docker image for project: ${project} from ${dockerfile}"
 
-                        // Find the JAR file.
-                        def jarPattern = "build/libs/*.jar"  //For Gradle
-                        // def jarPattern = "target/*.jar"  //For Maven
-                        def jarFile = findFiles(baseDir: project, glob: jarPattern)[0]?.name
-
-                        if (!jarFile) {
-                            error "JAR file not found for project: ${project}.  Check that the build was successful."
+                     // Find the JAR file.
+                        def jarPattern = "build/libs/*.jar"  // For Gradle
+                        // def jarPattern = "target/*.jar"  // For Maven
+                        dir(project) { // Change to project directory
+                           def jarFiles = findFiles(glob: jarPattern)
+                           def jarFile = jarFiles.length > 0 ? jarFiles[0].name : null
+                           if (!jarFile) {
+                                error "JAR file not found for project: ${project}.  Check that the build was successful."
+                           }
+                           bat "docker build -t ${project.toLowerCase()}:${BUILD_NUMBER} --build-arg JAR_FILE=${jarFile} -f ${dockerfile} ."
                         }
-                        bat "docker build -t ${project.toLowerCase()}:${BUILD_NUMBER} --build-arg JAR_FILE=${jarFile} ${project}"
-                    }
                 }
             }
         }
