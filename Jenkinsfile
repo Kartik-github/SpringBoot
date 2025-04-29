@@ -27,7 +27,7 @@ pipeline {
                     // Build each project's JAR file.
                     for (def project in projects) {
                         echo "Building JAR for project: ${project}"
-                        bat "cd ${project} && ./gradlew clean build" // Or "cd ${project} && mvn clean package"
+                        bat "cd ${project} && gradlew.bat clean build" // Or "cd ${project} && mvn clean package"
                     }
                 }
             }
