@@ -36,19 +36,18 @@ pipeline {
             steps {
                 script {
                     // Define the projects and their corresponding Dockerfile locations.
-                    def dockerProjects = [
-                        'service-registry':'service-registry/Dockerfile',
-                        'api-gateway':'api-gateway/Dockerfile',
-                        'config-server':'config-server/Dockerfile',
-                        'movie-catalog-service':'movie-catalog-service/Dockerfile',
-                        'movie-streaming-service':'movie-streaming-service/Dockerfile'
-                        // Add other projects and their Dockerfile paths
+                     def dockerProjects = [
+                        'service-registry',
+                        'api-gateway',
+                        'config-server',
+                        'movie-catalog-service',
+                        'movie-streaming-service'
+                        // Add other projects as needed
                     ]
 
                     // Build a Docker image for each project.
-                    for (def project in dockerProjects.keySet()) {
-                        def dockerfile = dockerProjects[project]
-                        echo "Building Docker image for project: ${project} from ${dockerfile}"
+                    for (def project in dockerProjects) {
+                        echo "Building Docker image for project: ${project}"
 
                      // Find the JAR file.
                         def jarPattern = "build/libs/*.jar"  // For Gradle
