@@ -1,7 +1,7 @@
 version: '3'
 services:
   service-registry:
-    image: service-image
+    image: service-registry
     container_name: service-registry-container
     expose:
       - 8761
